@@ -7,7 +7,7 @@ export default class Viewer extends React.Component {
     super(props);
 
     this.state = {
-      channels: ""
+      channels: []
     };
   }
   addStream(){
@@ -25,8 +25,13 @@ export default class Viewer extends React.Component {
     var channel = data.stream.channel;
     var status = channel.status;
     var logo = channel.logo;
+    //Add to state
+  }
+  componentDidMount(){
+    getChannelData("freecodecamp");
   }
   render() {
+    //Turn state.channels into <Channels />
     return (
       <div className="viewer">
       </div>
