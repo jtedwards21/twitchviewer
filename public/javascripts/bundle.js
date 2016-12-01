@@ -21600,31 +21600,34 @@
 
 	      var url = "/streams/" + channelName;
 	      (0, _axios2.default)(url).then(function (data) {
-	        _this2.addChannelToState(data);
+	        _this2.addChannelToState(data, channelName);
 	      });
 	    }
 	  }, {
 	    key: "addChannelToState",
-	    value: function addChannelToState(channel) {
+	    value: function addChannelToState(channel, channelName) {
 	      console.log('g');
-	      channel = this.processChannel(channel);
+	      channel = this.processChannel(channel, channelName);
+	      if (channel == 0) {} //Throw an error
 	      var oldChannels = this.state.channels;
 	      oldChannels.push(channel);
 	      this.setState({ channels: oldChannels });
 	    }
 	  }, {
 	    key: "processChannel",
-	    value: function processChannel(data) {
+	    value: function processChannel(data, channelName) {
 	      if (data.data.stream == null) {
-	        return { game: "N/a", link: data.data._links.channel, preview: "N/a", status: "Offline", logo: "N/a" };
+	        return { name: channelName, game: "N/A", link: data.data._links.channel, status: "Offline", logo: "../img/question.png" };
+	      } else if (data.data.error !== undefined) {
+	        return 0;
 	      } else {
 	        var game = data.data.stream.game;
 	        var link = data.data.stream._links.self;
-	        var preview = data.data.stream.preview.small;
 	        var channel = data.data.stream.channel;
 	        var status = channel.status;
 	        var logo = channel.logo;
-	        return { game: game, link: link, preview: preview, status: status, logo: logo };
+	        var name = channel.display_name;
+	        return { game: game, link: link, status: status, logo: logo };
 	      }
 	    }
 	  }, {
@@ -21636,7 +21639,7 @@
 	    key: "render",
 	    value: function render() {
 	      var channels = this.state.channels.map(function (c, i) {
-	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, preview: c.preview, status: c.status, logo: c.logo });
+	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, status: c.status, logo: c.logo });
 	      });
 	      return _react2.default.createElement(
 	        "table",
@@ -21652,9 +21655,26 @@
 	              null,
 	              "#"
 	            ),
-	            _react2.default.createElement("th", null),
-	            _react2.default.createElement("th", null),
-	            _react2.default.createElement("th", null)
+	            _react2.default.createElement(
+	              "th",
+	              null,
+	              "Name"
+	            ),
+	            _react2.default.createElement(
+	              "th",
+	              null,
+	              "Status"
+	            ),
+	            _react2.default.createElement(
+	              "th",
+	              null,
+	              "Logo"
+	            ),
+	            _react2.default.createElement(
+	              "th",
+	              null,
+	              "Game"
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -23164,18 +23184,13 @@
 	          _react2.default.createElement(
 	            "a",
 	            { href: this.props.link },
-	            _react2.default.createElement("img", { src: this.props.logo })
+	            _react2.default.createElement("img", { className: "logo-img", src: this.props.logo })
 	          )
 	        ),
 	        _react2.default.createElement(
 	          "td",
 	          { className: "game" },
 	          this.props.game
-	        ),
-	        _react2.default.createElement(
-	          "td",
-	          { className: "preview" },
-	          _react2.default.createElement("img", { src: this.props.preview })
 	        )
 	      );
 	    }

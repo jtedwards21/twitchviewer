@@ -22,27 +22,31 @@ export default class Viewer extends React.Component {
   getChannelData(channelName){
     var url = "/streams/" + channelName;
     axios(url)
-    .then(data => {this.addChannelToState(data)});
+    .then(data => {this.addChannelToState(data, channelName)});
   }
-  addChannelToState(channel){
+  addChannelToState(channel, channelName){
     console.log('g');
-    channel = this.processChannel(channel);
+    channel = this.processChannel(channel, channelName);
+    if(channel == 0){}//Throw an error
     var oldChannels = this.state.channels;
     oldChannels.push(channel);
     this.setState({channels: oldChannels})
   }
-  processChannel(data) {
+  processChannel(data, channelName) {
     if(data.data.stream == null){
-	return {game: "N/a", link: data.data._links.channel, preview: "N/a", status: "Offline", logo: "N/a"}
+	return {name: channelName, game: "N/A", link: data.data._links.channel, status: "Offline", logo: "../img/question.png"}
+    }
+    else if(data.data.error !== undefined){
+	return 0;
     }
     else{
       var game = data.data.stream.game;
       var link = data.data.stream._links.self;
-      var preview = data.data.stream.preview.small;
       var channel = data.data.stream.channel;
       var status = channel.status;
       var logo = channel.logo;
-      return {game:game, link:link, preview:preview, status:status, logo:logo}
+      var name = channel.display_name
+      return {game:game, link:link, status:status, logo:logo}
     }
   }
   componentDidMount(){
@@ -50,16 +54,17 @@ export default class Viewer extends React.Component {
   }
   render() {
     var channels = this.state.channels.map(function(c, i){
-	return <Channel key={i} number={i} game={c.game} link={c.link} preview={c.preview} status={c.status} logo={c.logo}/>
+	return <Channel key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
     return (
       <table className="viewer table table-hover">
 	<thead>
 	  <tr>
 	    <th>#</th>
-	    <th></th>
-	    <th></th>
-	    <th></th>
+	    <th>Name</th>
+	    <th>Status</th>
+	    <th>Logo</th>
+	    <th>Game</th>
 	  </tr>
 	</thead>
 	<tbody>
