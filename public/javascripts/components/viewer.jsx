@@ -9,32 +9,44 @@ export default class Viewer extends React.Component {
     this.state = {
       channels: []
     };
+    
+    this.addChannel.bind(this);
+    this.getChannelData.bind(this);
+    this.processChannel.bind(this);
+    this.addChannelToState.bind(this);
+    
   }
   addChannel(){
     //Get a channel from the text input and add it to the props
   }
   getChannelData(channelName){
-    var url = "https://wind-bow.hyperdev.space/twitch-api/streams" + channelName;
+    var url = "/streams/" + channelName;
     axios(url)
-    .then(data => {addChannelToState(data)});
+    .then(data => {this.addChannelToState(data)});
   }
   addChannelToState(channel){
+    console.log('g');
     channel = this.processChannel(channel);
     var oldChannels = this.state.channels;
     oldChannels.push(channel);
-    this.setState(channels: oldChannels)
+    this.setState({channels: oldChannels})
   }
   processChannel(data) {
-    var game = data.stream.game;
-    var link = data.stream._links.self;
-    var preview = data.stream.preview.small;
-    var channel = data.stream.channel;
-    var status = channel.status;
-    var logo = channel.logo;
-    return {game:game, link:link, preview:preview, status:status, logo:logo}
+    if(data.data.stream == null){
+	return {game: "N/a", link: data.data._links.channel, preview: "N/a", status: "Offline", logo: "N/a"}
+    }
+    else{
+      var game = data.data.stream.game;
+      var link = data.data.stream._links.self;
+      var preview = data.data.stream.preview.small;
+      var channel = data.data.stream.channel;
+      var status = channel.status;
+      var logo = channel.logo;
+      return {game:game, link:link, preview:preview, status:status, logo:logo}
+    }
   }
   componentDidMount(){
-    getChannelData("freecodecamp");
+    this.getChannelData("freecodecamp");
   }
   render() {
     var channels = this.state.channels.map(function(c){
