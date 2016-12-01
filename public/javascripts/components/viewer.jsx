@@ -10,13 +10,19 @@ export default class Viewer extends React.Component {
       channels: []
     };
   }
-  addStream(){
-
+  addChannel(){
+    //Get a channel from the text input and add it to the props
   }
-  getChannelData(channel){
-    var url = "https://wind-bow.hyperdev.space/twitch-api/streams" + channel;
+  getChannelData(channelName){
+    var url = "https://wind-bow.hyperdev.space/twitch-api/streams" + channelName;
     axios(url)
-    .then(data => {processChannel(data)});
+    .then(data => {addChannelToState(data)});
+  }
+  addChannelToState(channel){
+    channel = this.processChannel(channel);
+    var oldChannels = this.state.channels;
+    oldChannels.push(channel);
+    this.setState(channels: oldChannels)
   }
   processChannel(data) {
     var game = data.stream.game;
@@ -25,15 +31,18 @@ export default class Viewer extends React.Component {
     var channel = data.stream.channel;
     var status = channel.status;
     var logo = channel.logo;
-    //Add to state
+    return {game:game, link:link, preview:preview, status:status, logo:logo}
   }
   componentDidMount(){
     getChannelData("freecodecamp");
   }
   render() {
-    //Turn state.channels into <Channels />
+    var channels = this.state.channels.map(function(c){
+	return <Channel game={c.game} link={c.link} preview={c.preview} status={c.status} logo={c.logo}/>
+    })
     return (
       <div className="viewer">
+	{channels}
       </div>
     );
   }
