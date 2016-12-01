@@ -49,13 +49,23 @@ export default class Viewer extends React.Component {
     this.getChannelData("freecodecamp");
   }
   render() {
-    var channels = this.state.channels.map(function(c){
-	return <Channel game={c.game} link={c.link} preview={c.preview} status={c.status} logo={c.logo}/>
+    var channels = this.state.channels.map(function(c, i){
+	return <Channel key={i} number={i} game={c.game} link={c.link} preview={c.preview} status={c.status} logo={c.logo}/>
     })
     return (
-      <div className="viewer">
-	{channels}
-      </div>
+      <table className="viewer table table-hover">
+	<thead>
+	  <tr>
+	    <th>#</th>
+	    <th></th>
+	    <th></th>
+	    <th></th>
+	  </tr>
+	</thead>
+	<tbody>
+	  {channels}
+	</tbody>
+      </table>
     );
   }
 }

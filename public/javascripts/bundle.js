@@ -21635,13 +21635,33 @@
 	  }, {
 	    key: "render",
 	    value: function render() {
-	      var channels = this.state.channels.map(function (c) {
-	        return _react2.default.createElement(_channel2.default, { game: c.game, link: c.link, preview: c.preview, status: c.status, logo: c.logo });
+	      var channels = this.state.channels.map(function (c, i) {
+	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, preview: c.preview, status: c.status, logo: c.logo });
 	      });
 	      return _react2.default.createElement(
-	        "div",
-	        { className: "viewer" },
-	        channels
+	        "table",
+	        { className: "viewer table table-hover" },
+	        _react2.default.createElement(
+	          "thead",
+	          null,
+	          _react2.default.createElement(
+	            "tr",
+	            null,
+	            _react2.default.createElement(
+	              "th",
+	              null,
+	              "#"
+	            ),
+	            _react2.default.createElement("th", null),
+	            _react2.default.createElement("th", null),
+	            _react2.default.createElement("th", null)
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "tbody",
+	          null,
+	          channels
+	        )
 	      );
 	    }
 	  }]);
@@ -23116,23 +23136,16 @@
 	  _createClass(Channel, [{
 	    key: "render",
 	    value: function render() {
-	      //Add className for coloring for inactive channels
-	      //This should be a table, not a collection of divs.
 	      return _react2.default.createElement(
-	        "div",
+	        "tr",
 	        { className: "channel" },
 	        _react2.default.createElement(
-	          "div",
-	          { className: "game" },
-	          this.props.game
+	          "th",
+	          { scope: "row" },
+	          this.props.number
 	        ),
 	        _react2.default.createElement(
-	          "div",
-	          { className: "preview" },
-	          _react2.default.createElement("img", { src: this.props.preview })
-	        ),
-	        _react2.default.createElement(
-	          "div",
+	          "td",
 	          { className: "channel" },
 	          _react2.default.createElement(
 	            "a",
@@ -23141,18 +23154,28 @@
 	          )
 	        ),
 	        _react2.default.createElement(
-	          "div",
+	          "td",
 	          { className: "status" },
-	          "this.props.status"
+	          this.props.status
 	        ),
 	        _react2.default.createElement(
-	          "div",
+	          "td",
 	          { className: "logo" },
 	          _react2.default.createElement(
 	            "a",
 	            { href: this.props.link },
 	            _react2.default.createElement("img", { src: this.props.logo })
 	          )
+	        ),
+	        _react2.default.createElement(
+	          "td",
+	          { className: "game" },
+	          this.props.game
+	        ),
+	        _react2.default.createElement(
+	          "td",
+	          { className: "preview" },
+	          _react2.default.createElement("img", { src: this.props.preview })
 	        )
 	      );
 	    }
