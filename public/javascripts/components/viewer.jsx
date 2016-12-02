@@ -28,7 +28,7 @@ export default class Viewer extends React.Component {
     console.log('g');
     channel = this.processChannel(channel, channelName);
     if(channel == 0){}//Throw an error
-    var oldChannels = this.state.channels;
+    var oldChannels = this.state.channels.slice();
     oldChannels.push(channel);
     this.setState({channels: oldChannels})
   }
@@ -49,28 +49,57 @@ export default class Viewer extends React.Component {
       return {game:game, link:link, status:status, logo:logo}
     }
   }
+  getFeatured(){
+    var url = "/streams/featured";
+    axios(url)
+    .then(data => {this.addFeaturedToState(data).bind(this)});
+  }
+  addFeaturedToState(data){
+    var f = data.data.featured;
+    for(var i=0; i < f.length;i++){
+      console.log('l');
+      var sorted = this.processFeaturedChannel(f[i]);
+      var oldChannels = this.state.channels.slice();
+      oldChannels.push(sorted);
+      this.setState({channels: oldChannels});
+    }
+  }
+  processFeaturedChannel(channel){
+    var game = channel.stream.game;
+      var link = channel.stream._links.self;
+      var c= channel.stream.channel;
+      var status = c.status;
+      var logo = c.logo;
+      var name = c.display_name
+      return {game:game, link:link, status:status, logo:logo}
+  }
   componentDidMount(){
     this.getChannelData("freecodecamp");
+    this.getFeatured();
   }
   render() {
     var channels = this.state.channels.map(function(c, i){
 	return <Channel key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
     return (
-      <table className="viewer table table-hover">
-	<thead>
-	  <tr>
-	    <th>#</th>
-	    <th>Name</th>
-	    <th>Status</th>
-	    <th>Logo</th>
-	    <th>Game</th>
-	  </tr>
-	</thead>
-	<tbody>
-	  {channels}
-	</tbody>
-      </table>
+　　　　　　<div className="row">
+	<div className="col-md-6 col-md-offset-3">
+        <table className="viewer table table-hover">
+	  <thead>
+	    <tr>
+	      <th>#</th>
+	      <th>Name</th>
+	      <th>Status</th>
+	      <th>Logo</th>
+	      <th>Game</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    {channels}
+	  </tbody>
+        </table>
+	</div>
+      </div>
     );
   }
 }

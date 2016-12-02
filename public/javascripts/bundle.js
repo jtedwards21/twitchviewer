@@ -21609,7 +21609,7 @@
 	      console.log('g');
 	      channel = this.processChannel(channel, channelName);
 	      if (channel == 0) {} //Throw an error
-	      var oldChannels = this.state.channels;
+	      var oldChannels = this.state.channels.slice();
 	      oldChannels.push(channel);
 	      this.setState({ channels: oldChannels });
 	    }
@@ -21631,9 +21631,43 @@
 	      }
 	    }
 	  }, {
+	    key: "getFeatured",
+	    value: function getFeatured() {
+	      var _this3 = this;
+
+	      var url = "/streams/featured";
+	      (0, _axios2.default)(url).then(function (data) {
+	        _this3.addFeaturedToState(data).bind(_this3);
+	      });
+	    }
+	  }, {
+	    key: "addFeaturedToState",
+	    value: function addFeaturedToState(data) {
+	      var f = data.data.featured;
+	      for (var i = 0; i < f.length; i++) {
+	        console.log('l');
+	        var sorted = this.processFeaturedChannel(f[i]);
+	        var oldChannels = this.state.channels.slice();
+	        oldChannels.push(sorted);
+	        this.setState({ channels: oldChannels });
+	      }
+	    }
+	  }, {
+	    key: "processFeaturedChannel",
+	    value: function processFeaturedChannel(channel) {
+	      var game = channel.stream.game;
+	      var link = channel.stream._links.self;
+	      var c = channel.stream.channel;
+	      var status = c.status;
+	      var logo = c.logo;
+	      var name = c.display_name;
+	      return { game: game, link: link, status: status, logo: logo };
+	    }
+	  }, {
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      this.getChannelData("freecodecamp");
+	      //this.getChannelData("freecodecamp");
+	      this.getFeatured();
 	    }
 	  }, {
 	    key: "render",
@@ -21642,45 +21676,53 @@
 	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, status: c.status, logo: c.logo });
 	      });
 	      return _react2.default.createElement(
-	        "table",
-	        { className: "viewer table table-hover" },
+	        "div",
+	        { className: "row" },
 	        _react2.default.createElement(
-	          "thead",
-	          null,
+	          "div",
+	          { className: "col-md-6 col-md-offset-3" },
 	          _react2.default.createElement(
-	            "tr",
-	            null,
+	            "table",
+	            { className: "viewer table table-hover" },
 	            _react2.default.createElement(
-	              "th",
+	              "thead",
 	              null,
-	              "#"
+	              _react2.default.createElement(
+	                "tr",
+	                null,
+	                _react2.default.createElement(
+	                  "th",
+	                  null,
+	                  "#"
+	                ),
+	                _react2.default.createElement(
+	                  "th",
+	                  null,
+	                  "Name"
+	                ),
+	                _react2.default.createElement(
+	                  "th",
+	                  null,
+	                  "Status"
+	                ),
+	                _react2.default.createElement(
+	                  "th",
+	                  null,
+	                  "Logo"
+	                ),
+	                _react2.default.createElement(
+	                  "th",
+	                  null,
+	                  "Game"
+	                )
+	              )
 	            ),
 	            _react2.default.createElement(
-	              "th",
+	              "tbody",
 	              null,
-	              "Name"
-	            ),
-	            _react2.default.createElement(
-	              "th",
-	              null,
-	              "Status"
-	            ),
-	            _react2.default.createElement(
-	              "th",
-	              null,
-	              "Logo"
-	            ),
-	            _react2.default.createElement(
-	              "th",
-	              null,
-	              "Game"
+	              channels
 	            )
 	          )
-	        ),
-	        _react2.default.createElement(
-	          "tbody",
-	          null,
-	          channels
 	        )
 	      );
 	    }
