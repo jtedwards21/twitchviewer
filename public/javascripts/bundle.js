@@ -21577,6 +21577,7 @@
 	    var _this = _possibleConstructorReturn(this, (Viewer.__proto__ || Object.getPrototypeOf(Viewer)).call(this, props));
 
 	    _this.state = {
+	      search: "",
 	      channels: []
 	    };
 
@@ -21664,9 +21665,20 @@
 	      return { game: game, link: link, status: status, logo: logo };
 	    }
 	  }, {
+	    key: "addNewChannel",
+	    value: function addNewChannel() {
+	      var s = this.state.search;
+	      this.getChannelData(s);
+	    }
+	  }, {
+	    key: "handleChange",
+	    value: function handleChange(e) {
+	      this.setState({ search: e.target.value });
+	    }
+	  }, {
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      //this.getChannelData("freecodecamp");
+	      this.getChannelData("freecodecamp");
 	      this.getFeatured();
 	    }
 	  }, {
@@ -21675,52 +21687,66 @@
 	      var channels = this.state.channels.map(function (c, i) {
 	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, status: c.status, logo: c.logo });
 	      });
-	      return _react2.default.createElement(
-	        "div",
-	        { className: "row" },
+	      return (
+	        //This can have a litte add icon next to the input block
+
 	        _react2.default.createElement(
 	          "div",
-	          { className: "col-md-6 col-md-offset-3" },
+	          { className: "row" },
 	          _react2.default.createElement(
-	            "table",
-	            { className: "viewer table table-hover" },
+	            "div",
+	            { className: "col-md-6 col-md-offset-3" },
 	            _react2.default.createElement(
-	              "thead",
-	              null,
+	              "div",
+	              { className: "input-group" },
+	              _react2.default.createElement("input", { type: "text", className: "form-control", onChange: this.handleChange.bind(this), value: this.state.search, "aria-describedby": "basic-addon1", placeholder: "Add a channel..." }),
 	              _react2.default.createElement(
-	                "tr",
-	                null,
-	                _react2.default.createElement(
-	                  "th",
-	                  null,
-	                  "#"
-	                ),
-	                _react2.default.createElement(
-	                  "th",
-	                  null,
-	                  "Name"
-	                ),
-	                _react2.default.createElement(
-	                  "th",
-	                  null,
-	                  "Status"
-	                ),
-	                _react2.default.createElement(
-	                  "th",
-	                  null,
-	                  "Logo"
-	                ),
-	                _react2.default.createElement(
-	                  "th",
-	                  null,
-	                  "Game"
-	                )
+	                "span",
+	                { className: "add-button input-group-addon", onClick: this.addNewChannel.bind(this), id: "basic-addon1" },
+	                "+"
 	              )
 	            ),
 	            _react2.default.createElement(
-	              "tbody",
-	              null,
-	              channels
+	              "table",
+	              { className: "viewer table table-hover" },
+	              _react2.default.createElement(
+	                "thead",
+	                null,
+	                _react2.default.createElement(
+	                  "tr",
+	                  null,
+	                  _react2.default.createElement(
+	                    "th",
+	                    null,
+	                    "#"
+	                  ),
+	                  _react2.default.createElement(
+	                    "th",
+	                    null,
+	                    "Name"
+	                  ),
+	                  _react2.default.createElement(
+	                    "th",
+	                    null,
+	                    "Status"
+	                  ),
+	                  _react2.default.createElement(
+	                    "th",
+	                    null,
+	                    "Logo"
+	                  ),
+	                  _react2.default.createElement(
+	                    "th",
+	                    null,
+	                    "Game"
+	                  )
+	                )
+	              ),
+	              _react2.default.createElement(
+	                "tbody",
+	                null,
+	                channels
+	              )
 	            )
 	          )
 	        )

@@ -10,3 +10,7 @@ a {
 .logo-img {
   width: 50px;
 }
+
+.add-button {
+  cursor: pointer;
+}

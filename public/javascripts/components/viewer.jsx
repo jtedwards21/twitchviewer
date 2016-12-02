@@ -7,6 +7,7 @@ export default class Viewer extends React.Component {
     super(props);
 
     this.state = {
+      search: "",
       channels: []
     };
     
@@ -73,6 +74,13 @@ export default class Viewer extends React.Component {
       var name = c.display_name
       return {game:game, link:link, status:status, logo:logo}
   }
+  addNewChannel(){
+    var s = this.state.search;
+    this.getChannelData(s);
+  }
+  handleChange(e){
+    this.setState({search: e.target.value});
+  }
   componentDidMount(){
     this.getChannelData("freecodecamp");
     this.getFeatured();
@@ -82,8 +90,14 @@ export default class Viewer extends React.Component {
 	return <Channel key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
     return (
+	//This can have a litte add icon next to the input block
+
 　　　　　　<div className="row">
 	<div className="col-md-6 col-md-offset-3">
+        <div className="input-group">
+	  <input type="text" className="form-control" onChange={this.handleChange.bind(this)} value={this.state.search} aria-describedby="basic-addon1" placeholder="Add a channel..." />
+	  <span className="add-button input-group-addon" onClick={this.addNewChannel.bind(this)} id="basic-addon1">+</span>
+	</div>
         <table className="viewer table table-hover">
 	  <thead>
 	    <tr>
