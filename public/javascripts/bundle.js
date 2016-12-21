@@ -21690,10 +21690,9 @@
 	      var s = { marginBottom: "40px" };
 	      return (
 	        //This can have a litte add icon next to the input block
-
 	        _react2.default.createElement(
 	          "div",
-	          { className: "row" },
+	          { id: "r", className: "row" },
 	          _react2.default.createElement(
 	            "div",
 	            { id: "main-content", className: "col-md-6 col-md-offset-3" },

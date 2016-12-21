@@ -92,8 +92,7 @@ export default class Viewer extends React.Component {
     var s = {marginBottom: "40px"};
     return (
 	//This can have a litte add icon next to the input block
-
-　　　　　　<div className="row">
+　　　　　　<div id="r" className="row">
 	<div id="main-content" className="col-md-6 col-md-offset-3">
         <div style={s} id="search-bar" className="input-group">
 	  <input type="text" className="form-control" onChange={this.handleChange.bind(this)} value={this.state.search} aria-describedby="basic-addon1" placeholder="Add a channel..." />
