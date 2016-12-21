@@ -8,7 +8,7 @@ import request from "request";
 
 router.get("/streams/:channel", function(req, res){
   console.log(req.params.channel);
-  var url = "https://wind-bow.hyperdev.space/twitch-api/streams/" + req.params.channel;
+  var url = "https://wind-bow.gomix.me/twitch-api/streams/" + req.params.channel;
   var options = {url: url}
   var callback = function(err, response, body){ res.send(body);}
   request(options, callback);

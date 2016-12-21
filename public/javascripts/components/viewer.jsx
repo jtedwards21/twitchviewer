@@ -89,16 +89,17 @@ export default class Viewer extends React.Component {
     var channels = this.state.channels.map(function(c, i){
 	return <Channel key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
+    var s = {marginBottom: "40px"};
     return (
 	//This can have a litte add icon next to the input block
 
 　　　　　　<div className="row">
-	<div className="col-md-6 col-md-offset-3">
-        <div className="input-group">
+	<div id="main-content" className="col-md-6 col-md-offset-3">
+        <div style={s} id="search-bar" className="input-group">
 	  <input type="text" className="form-control" onChange={this.handleChange.bind(this)} value={this.state.search} aria-describedby="basic-addon1" placeholder="Add a channel..." />
 	  <span className="add-button input-group-addon" onClick={this.addNewChannel.bind(this)} id="basic-addon1">+</span>
 	</div>
-        <table className="viewer table table-hover">
+        <table id="channels" className="viewer table table-hover">
 	  <thead>
 	    <tr>
 	      <th>#</th>

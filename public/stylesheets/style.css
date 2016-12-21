@@ -3,6 +3,15 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+#background {
+  background-color: #475959;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 a {
   color: #00B7FF;
 }
@@ -13,4 +22,15 @@ a {
 
 .add-button {
   cursor: pointer;
+}
+
+#search-bar {
+　　margin-bottom: 40px;
+}
+
+#main-content {
+  background-color: #799899;
+  padding-top: 30px;
+  border-radius: 15px;
+  box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32), 0 3px 12px 0 rgba(0, 0, 0, 0.24);
 }

@@ -21687,6 +21687,7 @@
 	      var channels = this.state.channels.map(function (c, i) {
 	        return _react2.default.createElement(_channel2.default, { key: i, number: i, game: c.game, link: c.link, status: c.status, logo: c.logo });
 	      });
+	      var s = { marginBottom: "40px" };
 	      return (
 	        //This can have a litte add icon next to the input block
 
@@ -21695,10 +21696,10 @@
 	          { className: "row" },
 	          _react2.default.createElement(
 	            "div",
-	            { className: "col-md-6 col-md-offset-3" },
+	            { id: "main-content", className: "col-md-6 col-md-offset-3" },
 	            _react2.default.createElement(
 	              "div",
-	              { className: "input-group" },
+	              { style: s, id: "search-bar", className: "input-group" },
 	              _react2.default.createElement("input", { type: "text", className: "form-control", onChange: this.handleChange.bind(this), value: this.state.search, "aria-describedby": "basic-addon1", placeholder: "Add a channel..." }),
 	              _react2.default.createElement(
 	                "span",
@@ -21708,7 +21709,7 @@
 	            ),
 	            _react2.default.createElement(
 	              "table",
-	              { className: "viewer table table-hover" },
+	              { id: "channels", className: "viewer table table-hover" },
 	              _react2.default.createElement(
 	                "thead",
 	                null,
