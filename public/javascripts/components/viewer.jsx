@@ -41,7 +41,7 @@ export default class Viewer extends React.Component {
      .then(function(data){
 	if(data.data.error == "Not Found"){
 	  var oldChannels = that.state.channels.slice();
-          oldChannels.push({name:name, logo:"unknown", game:"N/a",status:"Does Not Exist"});
+          oldChannels.push({name:name, link:"none", logo:"none", game:"N/a",status:"Does Not Exist"});
           that.setState({channels: oldChannels});
 	} else {
 	console.log('lol');

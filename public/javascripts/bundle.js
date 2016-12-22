@@ -21623,16 +21623,17 @@
 	      (0, _axios2.default)(url).then(function (data) {
 	        if (data.data.error == "Not Found") {
 	          var oldChannels = that.state.channels.slice();
-	          oldChannels.push({ name: name, logo: "unknown", game: "N/a", status: "Does Not Exist" });
+	          oldChannels.push({ name: name, link: "none", logo: "none", game: "N/a", status: "Does Not Exist" });
+	          that.setState({ channels: oldChannels });
+	        } else {
+	          console.log('lol');
+	          var logo = data.data.logo;
+	          var status = "Offline";
+	          var game = data.data.game;
+	          var oldChannels = that.state.channels.slice();
+	          oldChannels.push({ name: name, logo: logo, game: game, status: status });
 	          that.setState({ channels: oldChannels });
 	        }
-	        console.log('lol');
-	        var logo = data.data.logo;
-	        var status = "Offline";
-	        var game = data.data.game;
-	        var oldChannels = that.state.channels.slice();
-	        oldChannels.push({ name: name, logo: logo, game: game, status: status });
-	        that.setState({ channels: oldChannels });
 	      });
 	    }
 	  }, {
@@ -23245,12 +23246,18 @@
 	  _createClass(Channel, [{
 	    key: "redirect",
 	    value: function redirect() {
-	      var l = this.props.link;
-	      window.location = l;
+	      if (this.props.link !== "none") {
+	        var l = this.props.link;
+	        window.location = l;
+	      }
 	    }
 	  }, {
 	    key: "render",
 	    value: function render() {
+	      var logo = this.props.logo;
+	      if (logo == "none") {
+	        logo = "/img/question.png";
+	      }
 	      return _react2.default.createElement(
 	        "tr",
 	        { className: "channel", onClick: this.redirect.bind(this) },
@@ -23274,8 +23281,8 @@
 	          { className: "logo" },
 	          _react2.default.createElement(
 	            "a",
-	            { href: this.props.link },
-	            _react2.default.createElement("img", { className: "logo-img", src: this.props.logo })
+	            null,
+	            _react2.default.createElement("img", { className: "logo-img", src: logo })
 	          )
 	        ),
 	        _react2.default.createElement(
