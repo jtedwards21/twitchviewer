@@ -23,19 +23,35 @@ export default class Viewer extends React.Component {
   getChannelData(channelName){
     var url = "/streams/" + channelName;
     axios(url)
-    .then(data => {this.addChannelToState(data, channelName)});
+    .then(data => {this.addChannelToState(data, channelName).bind(this)});
   }
   addChannelToState(channel, channelName){
     console.log('g');
-    channel = this.processChannel(channel, channelName);
+    channel = this.processChannel(channel, channelName).bind(this);
     if(channel == 0){}//Throw an error
     var oldChannels = this.state.channels.slice();
     oldChannels.push(channel);
     this.setState({channels: oldChannels})
   }
+  getOfflineChannel(channelName){
+     var url = "/channels/" + channelName;
+     var name = channelName;
+     var that = this;
+     axios(url)
+     .then(function(data){
+	console.log('lol');
+	var logo = data.data.logo;
+        var status = "Offline";
+        var game = data.data.game;
+        var oldChannels = that.state.channels.slice();
+        oldChannels.push({name:name, logo:logo,game:game,status:status});
+        that.setState({channels: oldChannels});
+	});
+  }
   processChannel(data, channelName) {
     if(data.data.stream == null){
-	return {name: channelName, game: "N/A", link: data.data._links.channel, status: "Offline", logo: "../img/question.png"}
+	console.log(data);
+　　　　　　　　var channel = this.getOfflineChannel(channelName).bind(this);
     }
     else if(data.data.error !== undefined){
 	return 0;
@@ -81,12 +97,11 @@ export default class Viewer extends React.Component {
     this.setState({search: e.target.value});
   }
   componentDidMount(){
-    this.getChannelData("freecodecamp");
+    this.getChannelData("freecodecamp").bind(this);
     this.getFeatured();
   }
   render() {
     var channels = this.state.channels.map(function(c, i){
-        console.log(c);
 	return <Channel name={c.name} key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
     var s = {marginBottom: "40px"};

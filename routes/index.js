@@ -14,6 +14,14 @@ router.get("/streams/:channel", function(req, res){
   request(options, callback);
 })
 
+router.get("/channels/:channel", function(req, res){
+  console.log(req.params.channel);
+  var url = "https://wind-bow.gomix.me/twitch-api/channels/" + req.params.channel;
+  var options = {url: url}
+  var callback = function(err, response, body){ res.send(body);}
+  request(options, callback);
+})
+
 /* GET home page. */
 router.get("/", function(req, res) {
   const markup = renderToString(<App />);
