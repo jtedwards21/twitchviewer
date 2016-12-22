@@ -42,12 +42,12 @@ export default class Viewer extends React.Component {
     }
     else{
       var game = data.data.stream.game;
-      var link = data.data.stream._links.self;
       var channel = data.data.stream.channel;
+      var link = channel.url;
       var status = channel.status;
       var logo = channel.logo;
       var name = channel.display_name
-      return {game:game, link:link, status:status, logo:logo}
+      return {name:name, game:game, link:link, status:status, logo:logo}
     }
   }
   getFeatured(){
@@ -58,7 +58,6 @@ export default class Viewer extends React.Component {
   addFeaturedToState(data){
     var f = data.data.featured;
     for(var i=0; i < f.length;i++){
-      console.log('l');
       var sorted = this.processFeaturedChannel(f[i]);
       var oldChannels = this.state.channels.slice();
       oldChannels.push(sorted);
@@ -67,12 +66,12 @@ export default class Viewer extends React.Component {
   }
   processFeaturedChannel(channel){
     var game = channel.stream.game;
-      var link = channel.stream._links.self;
       var c= channel.stream.channel;
+      var link = c.url;
       var status = c.status;
       var logo = c.logo;
       var name = c.display_name
-      return {game:game, link:link, status:status, logo:logo}
+      return {name:name,game:game, link:link, status:status, logo:logo}
   }
   addNewChannel(){
     var s = this.state.search;
@@ -87,7 +86,8 @@ export default class Viewer extends React.Component {
   }
   render() {
     var channels = this.state.channels.map(function(c, i){
-	return <Channel key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
+        console.log(c);
+	return <Channel name={c.name} key={i} number={i} game={c.game} link={c.link} status={c.status} logo={c.logo}/>
     })
     var s = {marginBottom: "40px"};
     return (

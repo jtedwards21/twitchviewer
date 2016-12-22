@@ -41,6 +41,11 @@ body {
   margin-top: 5px;
 }
 
+.channel {
+  cursor: pointer;
+}
+
+
 a {
   color: #00B7FF;
 }

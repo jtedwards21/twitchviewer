@@ -8,11 +8,15 @@ export default class Channel extends React.Component {
 
     };
   }
+  redirect(){
+    var l = this.props.link;
+    window.location=l;
+  }
   render(){
     return (
-      <tr className="channel">
+      <tr className="channel"　onClick={this.redirect.bind(this)}>
 	<th scope="row">{this.props.number}</th>
-        <td className="channel"><a href={this.props.link}>{this.props.channel}</a></td>
+	<td className="channelName">{this.props.name}</td>
         <td className="status">{this.props.status}</td>
         <td className="logo"><a href={this.props.link}><img className="logo-img" src={this.props.logo}/></a></td>
 	<td className="game">{this.props.game}</td>
