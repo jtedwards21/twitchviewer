@@ -21621,6 +21621,11 @@
 	      var name = channelName;
 	      var that = this;
 	      (0, _axios2.default)(url).then(function (data) {
+	        if (data.data.error == "Not Found") {
+	          var oldChannels = that.state.channels.slice();
+	          oldChannels.push({ name: name, logo: "unknown", game: "N/a", status: "Does Not Exist" });
+	          that.setState({ channels: oldChannels });
+	        }
 	        console.log('lol');
 	        var logo = data.data.logo;
 	        var status = "Offline";
@@ -21635,7 +21640,7 @@
 	    value: function processChannel(data, channelName) {
 	      if (data.data.stream == null) {
 	        console.log(data);
-	        var channel = this.getOfflineChannel(channelName).bind(this);
+	        this.getOfflineChannel(channelName).bind(this);
 	      } else if (data.data.error !== undefined) {
 	        return 0;
 	      } else {
@@ -21694,8 +21699,8 @@
 	  }, {
 	    key: "componentDidMount",
 	    value: function componentDidMount() {
-	      this.getChannelData("freecodecamp").bind(this);
 	      this.getFeatured();
+	      this.getChannelData("freecodecamp").bind(this);
 	    }
 	  }, {
 	    key: "render",

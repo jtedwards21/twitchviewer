@@ -39,19 +39,24 @@ export default class Viewer extends React.Component {
      var that = this;
      axios(url)
      .then(function(data){
+	if(data.data.error == "Not Found"){
+	  var oldChannels = that.state.channels.slice();
+          oldChannels.push({name:name, logo:"unknown", game:"N/a",status:"Does Not Exist"});
+          that.setState({channels: oldChannels});
+	} else {
 	console.log('lol');
 	var logo = data.data.logo;
         var status = "Offline";
         var game = data.data.game;
         var oldChannels = that.state.channels.slice();
         oldChannels.push({name:name, logo:logo,game:game,status:status});
-        that.setState({channels: oldChannels});
+        that.setState({channels: oldChannels}); }
 	});
   }
   processChannel(data, channelName) {
     if(data.data.stream == null){
 	console.log(data);
-　　　　　　　　var channel = this.getOfflineChannel(channelName).bind(this);
+　　　　　　　　this.getOfflineChannel(channelName).bind(this);
     }
     else if(data.data.error !== undefined){
 	return 0;
@@ -97,8 +102,8 @@ export default class Viewer extends React.Component {
     this.setState({search: e.target.value});
   }
   componentDidMount(){
-    this.getChannelData("freecodecamp").bind(this);
     this.getFeatured();
+    this.getChannelData("freecodecamp").bind(this);
   }
   render() {
     var channels = this.state.channels.map(function(c, i){
